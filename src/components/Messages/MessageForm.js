@@ -1,5 +1,5 @@
 import React from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import firebase from "../../firebase";
 import { Segment, Button, Input } from "semantic-ui-react";
 import { Picker, emojiIndex } from "emoji-mart";
@@ -21,7 +21,7 @@ class MessageForm extends React.Component {
     loading: false,
     errors: [],
     modal: false,
-    emojiPicker: false
+    emojiPicker: false,
   };
 
   componentWillUnmount() {
@@ -35,11 +35,11 @@ class MessageForm extends React.Component {
 
   closeModal = () => this.setState({ modal: false });
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       this.sendMessage();
     }
@@ -47,15 +47,9 @@ class MessageForm extends React.Component {
     const { message, typingRef, channel, user } = this.state;
 
     if (message) {
-      typingRef
-        .child(channel.id)
-        .child(user.uid)
-        .set(user.displayName);
+      typingRef.child(channel.id).child(user.uid).set(user.displayName);
     } else {
-      typingRef
-        .child(channel.id)
-        .child(user.uid)
-        .remove();
+      typingRef.child(channel.id).child(user.uid).remove();
     }
   };
 
@@ -63,15 +57,15 @@ class MessageForm extends React.Component {
     this.setState({ emojiPicker: !this.state.emojiPicker });
   };
 
-  handleAddEmoji = emoji => {
+  handleAddEmoji = (emoji) => {
     const oldMessage = this.state.message;
     const newMessage = this.colonToUnicode(` ${oldMessage} ${emoji.colons} `);
     this.setState({ message: newMessage, emojiPicker: false });
     setTimeout(() => this.messageInputRef.focus(), 0);
   };
 
-  colonToUnicode = message => {
-    return message.replace(/:[A-Za-z0-9_+-]+:/g, x => {
+  colonToUnicode = (message) => {
+    return message.replace(/:[A-Za-z0-9_+-]+:/g, (x) => {
       x = x.replace(/:/g, "");
       let emoji = emojiIndex.emojis[x];
       if (typeof emoji !== "undefined") {
@@ -84,15 +78,15 @@ class MessageForm extends React.Component {
       return x;
     });
   };
-
+  //create message
   createMessage = (fileUrl = null) => {
     const message = {
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       user: {
         id: this.state.user.uid,
         name: this.state.user.displayName,
-        avatar: this.state.user.photoURL
-      }
+        avatar: this.state.user.photoURL,
+      },
     };
     if (fileUrl !== null) {
       message["image"] = fileUrl;
@@ -101,7 +95,7 @@ class MessageForm extends React.Component {
     }
     return message;
   };
-
+  //send message
   sendMessage = () => {
     const { getMessagesRef } = this.props;
     const { message, channel, user, typingRef } = this.state;
@@ -114,21 +108,18 @@ class MessageForm extends React.Component {
         .set(this.createMessage())
         .then(() => {
           this.setState({ loading: false, message: "", errors: [] });
-          typingRef
-            .child(channel.id)
-            .child(user.uid)
-            .remove();
+          typingRef.child(channel.id).child(user.uid).remove();
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.setState({
             loading: false,
-            errors: this.state.errors.concat(err)
+            errors: this.state.errors.concat(err),
           });
         });
     } else {
       this.setState({
-        errors: this.state.errors.concat({ message: "Add a message" })
+        errors: this.state.errors.concat({ message: "Add a message" }),
       });
     }
   };
@@ -140,7 +131,7 @@ class MessageForm extends React.Component {
       return "chat/public";
     }
   };
-
+  //upload file
   uploadFile = (file, metadata) => {
     const pathToUpload = this.state.channel.id;
     const ref = this.props.getMessagesRef();
@@ -149,37 +140,37 @@ class MessageForm extends React.Component {
     this.setState(
       {
         uploadState: "uploading",
-        uploadTask: this.state.storageRef.child(filePath).put(file, metadata)
+        uploadTask: this.state.storageRef.child(filePath).put(file, metadata),
       },
       () => {
         this.state.uploadTask.on(
           "state_changed",
-          snap => {
+          (snap) => {
             const percentUploaded = Math.round(
               (snap.bytesTransferred / snap.totalBytes) * 100
             );
             this.setState({ percentUploaded });
           },
-          err => {
+          (err) => {
             console.error(err);
             this.setState({
               errors: this.state.errors.concat(err),
               uploadState: "error",
-              uploadTask: null
+              uploadTask: null,
             });
           },
           () => {
             this.state.uploadTask.snapshot.ref
               .getDownloadURL()
-              .then(downloadUrl => {
+              .then((downloadUrl) => {
                 this.sendFileMessage(downloadUrl, ref, pathToUpload);
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error(err);
                 this.setState({
                   errors: this.state.errors.concat(err),
                   uploadState: "error",
-                  uploadTask: null
+                  uploadTask: null,
                 });
               });
           }
@@ -196,10 +187,10 @@ class MessageForm extends React.Component {
       .then(() => {
         this.setState({ uploadState: "done" });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         this.setState({
-          errors: this.state.errors.concat(err)
+          errors: this.state.errors.concat(err),
         });
       });
   };
@@ -225,7 +216,7 @@ class MessageForm extends React.Component {
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
           value={message}
-          ref={node => (this.messageInputRef = node)}
+          ref={(node) => (this.messageInputRef = node)}
           style={{ marginBottom: "0.7em" }}
           label={
             <Button
@@ -236,7 +227,7 @@ class MessageForm extends React.Component {
           }
           labelPosition="left"
           className={
-            errors.some(error => error.message.includes("message"))
+            errors.some((error) => error.message.includes("message"))
               ? "error"
               : ""
           }

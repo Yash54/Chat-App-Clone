@@ -5,16 +5,16 @@ import { Modal, Input, Button, Icon } from "semantic-ui-react";
 class FileModal extends React.Component {
   state = {
     file: null,
-    authorized: ["image/jpeg", "image/png"]
+    authorized: ["image/jpeg", "image/png"],
   };
 
-  addFile = event => {
+  addFile = (event) => {
     const file = event.target.files[0];
     if (file) {
       this.setState({ file });
     }
   };
-
+  // send file Function
   sendFile = () => {
     const { file } = this.state;
     const { uploadFile, closeModal } = this.props;
@@ -29,7 +29,7 @@ class FileModal extends React.Component {
     }
   };
 
-  isAuthorized = filename =>
+  isAuthorized = (filename) =>
     this.state.authorized.includes(mime.lookup(filename));
 
   clearFile = () => this.setState({ file: null });

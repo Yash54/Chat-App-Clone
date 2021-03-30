@@ -1,5 +1,5 @@
 import React from "react";
-
+//avatar
 const Skeleton = () => (
   <div className="skeleton">
     <div className="skeleton__avatar" />

@@ -10,7 +10,7 @@ class MessagesHeader extends React.Component {
       searchLoading,
       isPrivateChannel,
       handleStar,
-      isChannelStarred
+      isChannelStarred,
     } = this.props;
 
     return (
@@ -45,5 +45,5 @@ class MessagesHeader extends React.Component {
     );
   }
 }
-
+// done
 export default MessagesHeader;

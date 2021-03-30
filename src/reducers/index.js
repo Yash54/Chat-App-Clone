@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import * as actionTypes from "../actions/types";
-
+//reducer
 const initialUserState = {
   currentUser: null,
-  isLoading: true
+  isLoading: true,
 };
 
 const user_reducer = (state = initialUserState, action) => {
@@ -11,12 +11,12 @@ const user_reducer = (state = initialUserState, action) => {
     case actionTypes.SET_USER:
       return {
         currentUser: action.payload.currentUser,
-        isLoading: false
+        isLoading: false,
       };
     case actionTypes.CLEAR_USER:
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
       };
     default:
       return state;
@@ -26,7 +26,7 @@ const user_reducer = (state = initialUserState, action) => {
 const initialChannelState = {
   currentChannel: null,
   isPrivateChannel: false,
-  userPosts: null
+  userPosts: null,
 };
 
 const channel_reducer = (state = initialChannelState, action) => {
@@ -34,17 +34,17 @@ const channel_reducer = (state = initialChannelState, action) => {
     case actionTypes.SET_CURRENT_CHANNEL:
       return {
         ...state,
-        currentChannel: action.payload.currentChannel
+        currentChannel: action.payload.currentChannel,
       };
     case actionTypes.SET_PRIVATE_CHANNEL:
       return {
         ...state,
-        isPrivateChannel: action.payload.isPrivateChannel
+        isPrivateChannel: action.payload.isPrivateChannel,
       };
     case actionTypes.SET_USER_POSTS:
       return {
         ...state,
-        userPosts: action.payload.userPosts
+        userPosts: action.payload.userPosts,
       };
     default:
       return state;
@@ -53,7 +53,7 @@ const channel_reducer = (state = initialChannelState, action) => {
 
 const initialColorsState = {
   primaryColor: "#4c3c4c",
-  secondaryColor: "#eee"
+  secondaryColor: "#eee",
 };
 
 const colors_reducer = (state = initialColorsState, action) => {
@@ -61,7 +61,7 @@ const colors_reducer = (state = initialColorsState, action) => {
     case actionTypes.SET_COLORS:
       return {
         primaryColor: action.payload.primaryColor,
-        secondaryColor: action.payload.secondaryColor
+        secondaryColor: action.payload.secondaryColor,
       };
     default:
       return state;
@@ -71,7 +71,7 @@ const colors_reducer = (state = initialColorsState, action) => {
 const rootReducer = combineReducers({
   user: user_reducer,
   channel: channel_reducer,
-  colors: colors_reducer
+  colors: colors_reducer,
 });
 
 export default rootReducer;

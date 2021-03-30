@@ -6,12 +6,12 @@ const isOwnMessage = (message, user) => {
   return message.user.id === user.uid ? "message__self" : "";
 };
 
-const isImage = message => {
+const isImage = (message) => {
   return message.hasOwnProperty("image") && !message.hasOwnProperty("content");
 };
 
-const timeFromNow = timestamp => moment(timestamp).fromNow();
-
+const timeFromNow = (timestamp) => moment(timestamp).fromNow();
+//Component
 const Message = ({ message, user }) => (
   <Comment>
     <Comment.Avatar src={message.user.avatar} />
@@ -26,6 +26,5 @@ const Message = ({ message, user }) => (
     </Comment.Content>
   </Comment>
 );
-
 
 export default Message;
